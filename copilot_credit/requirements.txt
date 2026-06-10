@@ -9,8 +9,6 @@ langchain-core
 fastapi
 uvicorn
 python-dotenv
-paddlepaddle
-paddleocr
 scikit-learn
 xgboost
 shap
