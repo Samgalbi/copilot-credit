@@ -79,13 +79,30 @@ def _calculer_mensualite(montant, duree_mois):
 
 
 def _calculer_label(salaire_net, incidents_bancaires, nb_credits_en_cours, mensualite):
+    """
+    Regles metier credit conso Attijari avec bruit realiste :
+    - REFUSE si salaire_net < 800 DT
+    - REFUSE si incidents ET nb_credits >= 2
+    - REFUSE si mensualite > 33% salaire_net
+    - APPROUVE sinon
+    - 8% de cas exceptionnels (decision manuelle banquier qui deroge a la regle)
+    """
+    # Decision de base selon les regles
     if salaire_net < 800:
-        return "refuse"
-    if incidents_bancaires == 1 and nb_credits_en_cours >= 2:
-        return "refuse"
-    if mensualite > salaire_net * 0.33:
-        return "refuse"
-    return "approuve"
+        decision_base = "refuse"
+    elif incidents_bancaires == 1 and nb_credits_en_cours >= 2:
+        decision_base = "refuse"
+    elif mensualite > salaire_net * 0.33:
+        decision_base = "refuse"
+    else:
+        decision_base = "approuve"
+
+    # Bruit realiste : 8% de cas ou le banquier deroge a la regle
+    # (garanties supplementaires, historique relationnel, etc.)
+    if random.random() < 0.08:
+        decision_base = "refuse" if decision_base == "approuve" else "approuve"
+
+    return decision_base
 
 
 def generer_un_profil():
@@ -137,7 +154,7 @@ def save_profiles(profiles, path="output/profiles.json"):
 
 
 if __name__ == "__main__":
-    profils = generate_profiles(50)
+    profils = generate_profiles(250)
     save_profiles(profils)
     approuves = sum(1 for p in profils if p["label"] == "approuve")
     refuses = sum(1 for p in profils if p["label"] == "refuse")

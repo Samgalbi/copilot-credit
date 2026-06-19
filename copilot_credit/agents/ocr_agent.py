@@ -1,8 +1,15 @@
+import os
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
+
 import json
 import re
 from pathlib import Path
 from pdf2image import convert_from_path
 import easyocr
+import torch
+torch.set_num_threads(1)
 import numpy as np
 from PIL import Image
 
@@ -14,7 +21,7 @@ reader_ar = easyocr.Reader(['ar', 'en'], gpu=False)
 POPPLER_PATH = r"C:\Users\GIGABYTE\AppData\Local\Microsoft\WinGet\Packages\oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe\poppler-25.07.0\Library\bin"
 
 def _pdf_to_images(pdf_path: str) -> list:
-    images = convert_from_path(pdf_path, dpi=200, poppler_path=POPPLER_PATH)
+    images = convert_from_path(pdf_path, dpi=100, poppler_path=POPPLER_PATH)
     return images
 
 
@@ -250,10 +257,17 @@ def process_document(file_path: str) -> dict:
     # Conversion en image
     if path.suffix.lower() == ".pdf":
         images = _pdf_to_images(str(path))
-        image_array = _image_to_array(images[0])
+        img_pil = images[0]
     else:
-        img = Image.open(path).convert("RGB")
-        image_array = _image_to_array(img)
+        img_pil = Image.open(path).convert("RGB")
+
+    # Limiter la taille max pour eviter erreur memoire CRAFT/EasyOCR
+    max_dim = 900
+    if max(img_pil.size) > max_dim:
+        ratio = max_dim / max(img_pil.size)
+        new_size = (int(img_pil.width * ratio), int(img_pil.height * ratio))
+        img_pil = img_pil.resize(new_size, Image.LANCZOS)
+    image_array = _image_to_array(img_pil)
 
     # Extraction OCR
     blocks = _extract_text_blocks(image_array)
