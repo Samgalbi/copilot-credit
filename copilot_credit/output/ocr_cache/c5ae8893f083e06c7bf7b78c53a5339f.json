@@ -1,0 +1,16 @@
+{
+  "type_document": "fiche_de_paie",
+  "employe": "Yassine Bouzid",
+  "cin": "99887766",
+  "employeur": "TUNISIE TELECOM",
+  "poste": "Ingenieur",
+  "periode": "Mai 2026",
+  "salaire_brut": 3200.0,
+  "salaire_net": 2496.0,
+  "cnss": 293.76,
+  "irpp": 320.0,
+  "confidence_moyenne": 0.918,
+  "fichier_source": "payslip_upload.pdf",
+  "nb_blocs_ocr": 34,
+  "alerte_hitl": false
+}

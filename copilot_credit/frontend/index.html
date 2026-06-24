@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot Credit - Attijari Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #042C53;
+    --navy-light: #0C447C;
+    --blue: #185FA5;
+    --blue-soft: #E6F1FB;
+    --orange: #ED1C24;
+    --orange-soft: #FDE8E9;
+    --teal: #0F6E56;
+    --teal-soft: #E1F5EE;
+    --amber: #854F0B;
+    --amber-soft: #FAEEDA;
+    --red: #993C1D;
+    --red-soft: #FAECE7;
+    --ink: #1a1d23;
+    --muted: #6b7280;
+    --border: #E8ECF2;
+    --bg: #F5F7FA;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+    width: 240px;
+    background: var(--navy);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+}
+.sidebar-logo {
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: white;
+}
+.sidebar-logo img { width: 100%; max-width: 160px; }
+.sidebar-nav { padding: 16px 0; flex: 1; }
+.nav-item {
+    padding: 13px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+}
+.nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+.nav-item.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border-left-color: var(--orange);
+}
+.nav-item .icon { font-size: 18px; width: 20px; text-align: center; }
+.sidebar-footer {
+    padding: 18px 22px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+}
+
+/* ── MAIN ── */
+.main {
+    margin-left: 240px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.topbar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.topbar h1 { font-size: 20px; font-weight: 600; color: var(--navy); }
+.topbar-sub { font-size: 13px; color: var(--muted); }
+.user-chip {
+    display: flex; align-items: center; gap: 10px;
+}
+.user-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--blue); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px;
+}
+.content { padding: 28px 32px; }
+
+/* ── STAT CARDS ── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+.stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.stat-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+}
+.stat-info .label { font-size: 13px; color: var(--muted); }
+.stat-info .value { font-size: 26px; font-weight: 700; }
+
+/* ── CARDS ── */
+.card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 20px;
+}
+.card-title {
+    font-size: 16px; font-weight: 600; color: var(--navy);
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+}
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+.tab {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+}
+.tab.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+/* ── UPLOAD ── */
+.upload-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--bg);
+}
+.upload-zone:hover { border-color: var(--blue); background: var(--blue-soft); }
+.upload-zone.filled { border-color: var(--teal); background: var(--teal-soft); }
+.upload-zone .up-icon { font-size: 28px; color: var(--blue); }
+.upload-zone .up-title { font-size: 14px; font-weight: 500; margin-top: 8px; }
+.upload-zone .up-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.upload-zone input { display: none; }
+
+/* ── FORM ── */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block; font-size: 13px; font-weight: 500;
+    margin-bottom: 6px; color: var(--ink);
+}
+.form-group input, .form-group select {
+    width: 100%; padding: 10px 12px;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 14px; font-family: inherit;
+}
+.form-group input:focus, .form-group select:focus {
+    outline: none; border-color: var(--blue);
+}
+
+/* ── BUTTONS ── */
+.btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s;
+}
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover { background: #c8141b; }
+.btn-success { background: var(--teal); color: white; }
+.btn-danger { background: var(--red); color: white; }
+.btn-outline { background: white; border: 1px solid var(--border); color: var(--ink); }
+
+/* ── BADGES ── */
+.badge { padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 14px; }
+.badge-vert { background: var(--teal-soft); color: var(--teal); }
+.badge-orange { background: var(--amber-soft); color: var(--amber); }
+.badge-rouge { background: var(--red-soft); color: var(--red); }
+
+/* ── HITL BANNER ── */
+.hitl-banner {
+    background: var(--amber-soft);
+    border-left: 4px solid #EF9F27;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 16px 0;
+    color: var(--amber);
+    font-size: 14px;
+}
+
+/* ── AGENTS GRID ── */
+.agents-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 20px 0;
+}
+.agent-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+}
+.agent-card .a-icon { font-size: 24px; margin-bottom: 8px; }
+.agent-card .a-name { font-size: 13px; color: var(--muted); }
+.agent-card .a-value { font-size: 18px; font-weight: 600; margin-top: 4px; }
+
+/* ── PIPELINE ── */
+.pipeline {
+    display: flex; align-items: center; gap: 8px;
+    margin: 24px 0;
+}
+.pipeline-step { flex: 1; text-align: center; }
+.pipeline-dot {
+    width: 44px; height: 44px; border-radius: 50%;
+    margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    color: var(--muted);
+}
+.pipeline-dot.done { background: var(--teal-soft); border-color: var(--teal); color: var(--teal); }
+.pipeline-dot.active { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+.pipeline-step .p-label { font-size: 11px; color: var(--muted); }
+.pipeline-line { flex: 0.5; height: 2px; background: var(--border); }
+
+/* ── MEMO ── */
+.memo-content {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+.shap-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+
+/* ── SPINNER ── */
+.spinner {
+    border: 3px solid var(--border);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    animation: spin 0.8s linear infinite;
+    margin: 20px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hidden { display: none; }
+.section-title { font-size: 15px; font-weight: 600; color: var(--navy); margin: 20px 0 12px; }
+</style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <img src="/logo" alt="Attijari Bank" onerror="this.style.display='none'">
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-item active" onclick="showView('upload', this)">
+            <span class="icon">📤</span> Nouveau dossier
+        </div>
+        <div class="nav-item" onclick="showView('demo', this)">
+            <span class="icon">🎬</span> Mode démo
+        </div>
+        <div class="nav-item" onclick="showView('history', this)">
+            <span class="icon">📋</span> Historique
+        </div>
+        <div class="nav-item" onclick="showView('stats', this)">
+            <span class="icon">📊</span> Statistiques
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        Copilot Crédit v1.0<br>
+        Powered by LangGraph + IA
+    </div>
+</div>
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <h1>Copilot Crédit</h1>
+            <div class="topbar-sub">Assistant IA de traitement des crédits à la consommation</div>
+        </div>
+        <div class="user-chip">
+            <div style="text-align:right;">
+                <div style="font-size:13px; font-weight:600;">S. Galbi</div>
+                <div style="font-size:11px; color:var(--muted);">Chargé de crédit</div>
+            </div>
+            <div class="user-avatar">SG</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:var(--blue-soft);">📁</div>
+                <div class="stat-info"><div class="label">Dossiers total</div>
+                <div class="value" style="color:var(--navy);" id="statTotal">-</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:var(--teal-soft);">✅</div>
+                <div class="stat-info"><div class="label">Approuvés</div>
+                <div class="value" style="color:var(--teal);" id="statApprouves">-</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:var(--red-soft);">❌</div>
+                <div class="stat-info"><div class="label">Refusés</div>
+                <div class="value" style="color:var(--red);" id="statRefuses">-</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:var(--amber-soft);">⏱️</div>
+                <div class="stat-info"><div class="label">Temps moyen</div>
+                <div class="value" style="color:var(--amber);" id="statTemps">-</div></div>
+            </div>
+        </div>
+
+        <!-- VUE UPLOAD -->
+        <div id="view-upload">
+            <div class="card">
+                <div class="card-title">📤 Déposer les documents du client</div>
+                <div class="upload-grid">
+                    <label class="upload-zone" id="zone-cin">
+                        <div class="up-icon">🪪</div>
+                        <div class="up-title">CIN (recto)</div>
+                        <div class="up-hint" id="hint-cin">PNG, JPG</div>
+                        <input type="file" id="file-cin" accept="image/*" onchange="handleFile('cin')">
+                    </label>
+                    <label class="upload-zone" id="zone-paie">
+                        <div class="up-icon">📄</div>
+                        <div class="up-title">Fiche de paie</div>
+                        <div class="up-hint" id="hint-paie">PDF</div>
+                        <input type="file" id="file-paie" accept=".pdf" onchange="handleFile('paie')">
+                    </label>
+                    <label class="upload-zone" id="zone-releve">
+                        <div class="up-icon">🏦</div>
+                        <div class="up-title">Relevé bancaire</div>
+                        <div class="up-hint" id="hint-releve">PDF</div>
+                        <input type="file" id="file-releve" accept=".pdf" onchange="handleFile('releve')">
+                    </label>
+                </div>
+
+                <div class="section-title">Informations complémentaires (saisie banquier)</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Montant demandé (DT)</label>
+                        <input type="number" id="f-montant" value="10000" min="1000" max="30000">
+                    </div>
+                    <div class="form-group">
+                        <label>Durée (mois)</label>
+                        <select id="f-duree">
+                            <option>6</option><option>12</option><option>18</option>
+                            <option>24</option><option selected>36</option><option>48</option>
+                            <option>60</option><option>72</option><option>84</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Motif</label>
+                        <select id="f-motif">
+                            <option>Achat vehicule</option><option>Achat electromenager</option>
+                            <option>Voyage</option><option>Mariage</option>
+                            <option>Frais medicaux</option><option>Financement etudes</option>
+                            <option>Amenagement logement</option><option>Projet personnel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ancienneté emploi (années)</label>
+                        <input type="number" id="f-anciennete" value="5" min="0" max="40">
+                    </div>
+                    <div class="form-group">
+                        <label>Crédits en cours (banque)</label>
+                        <input type="number" id="f-credits" value="0" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Incident bancaire</label>
+                        <select id="f-incident"><option value="0">Non</option><option value="1">Oui</option></select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="processUpload()">🚀 Analyser le dossier</button>
+            </div>
+        </div>
+
+        <!-- VUE DEMO -->
+        <div id="view-demo" class="hidden">
+            <div class="card">
+                <div class="card-title">🎬 Sélectionner un dossier de démonstration</div>
+                <div class="form-group" style="margin-bottom:18px;">
+                    <label>Dossier client</label>
+                    <select id="demo-select"></select>
+                </div>
+                <button class="btn btn-primary" onclick="processDemo()">🚀 Traiter le dossier</button>
+            </div>
+        </div>
+
+        <!-- VUE HISTORIQUE / STATS (placeholders) -->
+        <div id="view-history" class="hidden">
+            <div class="card"><div class="card-title">📋 Historique</div>
+            <p style="color:var(--muted);">Historique des dossiers traités (à venir).</p></div>
+        </div>
+        <div id="view-stats" class="hidden">
+            <div class="card"><div class="card-title">📊 Statistiques</div>
+            <p style="color:var(--muted);">Tableau de bord analytique (à venir).</p></div>
+        </div>
+
+        <!-- ZONE RESULTATS -->
+        <div id="results" class="hidden"></div>
+    </div>
+</div>
+
+<script>
+const API = "";
+let files = { cin: null, paie: null, releve: null };
+
+async function loadStats() {
+    try {
+        const r = await fetch(API + "/api/stats");
+        const d = await r.json();
+        document.getElementById("statTotal").textContent = d.total;
+        document.getElementById("statApprouves").textContent = d.approuves;
+        document.getElementById("statRefuses").textContent = d.refuses;
+        document.getElementById("statTemps").textContent = d.temps_moyen;
+    } catch(e) { console.error(e); }
+}
+
+async function loadProfiles() {
+    try {
+        const r = await fetch(API + "/api/profiles");
+        const profiles = await r.json();
+        const sel = document.getElementById("demo-select");
+        sel.innerHTML = "";
+        profiles.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.cin;
+            opt.textContent = `${p.prenom} ${p.nom} (CIN ${p.cin}) - ${p.motif}`;
+            sel.appendChild(opt);
+        });
+    } catch(e) { console.error(e); }
+}
+
+function showView(view, el) {
+    ["upload","demo","history","stats"].forEach(v => {
+        document.getElementById("view-"+v).classList.add("hidden");
+    });
+    document.getElementById("view-"+view).classList.remove("hidden");
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    el.classList.add("active");
+    document.getElementById("results").classList.add("hidden");
+}
+
+function handleFile(type) {
+    const input = document.getElementById("file-"+type);
+    if (input.files.length > 0) {
+        files[type] = input.files[0];
+        document.getElementById("zone-"+type).classList.add("filled");
+        document.getElementById("hint-"+type).textContent = "✓ " + input.files[0].name;
+    }
+}
+
+function showSpinner() {
+    const res = document.getElementById("results");
+    res.classList.remove("hidden");
+    res.innerHTML = '<div class="card"><div class="spinner"></div>' +
+        '<p style="text-align:center; color:var(--muted);">Traitement par les agents IA en cours...</p></div>';
+}
+
+async function processUpload() {
+    if (!files.cin && !files.paie && !files.releve) {
+        alert("Veuillez uploader au moins un document.");
+        return;
+    }
+    showSpinner();
+    const fd = new FormData();
+    fd.append("montant_demande", document.getElementById("f-montant").value);
+    fd.append("duree_mois", document.getElementById("f-duree").value);
+    fd.append("motif", document.getElementById("f-motif").value);
+    fd.append("anciennete_annees", document.getElementById("f-anciennete").value);
+    fd.append("nb_credits_en_cours", document.getElementById("f-credits").value);
+    fd.append("incidents_bancaires", document.getElementById("f-incident").value);
+    if (files.cin) fd.append("cin_file", files.cin);
+    if (files.paie) fd.append("paie_file", files.paie);
+    if (files.releve) fd.append("releve_file", files.releve);
+
+    try {
+        const r = await fetch(API + "/api/process-upload", { method: "POST", body: fd });
+        const result = await r.json();
+        renderResults(result);
+    } catch(e) {
+        document.getElementById("results").innerHTML =
+            '<div class="card" style="color:var(--red);">Erreur : ' + e + '</div>';
+    }
+}
+
+async function processDemo() {
+    showSpinner();
+    const cin = document.getElementById("demo-select").value;
+    const fd = new FormData();
+    fd.append("cin", cin);
+    try {
+        const r = await fetch(API + "/api/process-demo", { method: "POST", body: fd });
+        const result = await r.json();
+        renderResults(result);
+    } catch(e) {
+        document.getElementById("results").innerHTML =
+            '<div class="card" style="color:var(--red);">Erreur : ' + e + '</div>';
+    }
+}
+
+function renderResults(result) {
+    const decision = result.decision_finale || "INCONNU";
+    const badgeClass = {VERT:"badge-vert", ORANGE:"badge-orange", ROUGE:"badge-rouge"}[decision] || "badge-orange";
+
+    const idr = result.identity_report || {};
+    const fr = result.financial_report || {};
+    const sc = result.scoring_report || {};
+    const memo = result.memo_result || {};
+    const cap = (fr.capacite_remboursement) || {};
+
+    let shapHtml = "";
+    (sc.top_shap || []).forEach(s => {
+        const icon = s.impact === "favorable" ? "🟢" : "🔴";
+        shapHtml += `<div class="shap-item">${icon} <b>${s.feature}</b> : ${s.impact} (impact ${s.shap.toFixed(3)})</div>`;
+    });
+
+    let hitlHtml = "";
+    if (result.hitl_requis) {
+        hitlHtml = `<div class="hitl-banner">⚠️ <b>Validation humaine requise</b><br>${result.hitl_raison || ""}</div>`;
+    }
+
+    let profileHtml = "";
+    if (result.profile && result.profile.source === "upload") {
+        const p = result.profile;
+        profileHtml = `<div class="card"><div class="card-title">📋 Profil reconstruit depuis les documents</div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; font-size:14px;">
+            <div><b>Nom :</b> ${p.prenom} ${p.nom}</div>
+            <div><b>CIN :</b> ${p.cin}</div>
+            <div><b>Employeur :</b> ${p.employeur || "N/A"}</div>
+            <div><b>Salaire net :</b> ${p.salaire_net} DT</div>
+            <div><b>Mensualité :</b> ${p.mensualite_calculee} DT</div>
+            <div><b>Montant :</b> ${p.montant_demande} DT</div>
+            </div></div>`;
+    }
+
+    const res = document.getElementById("results");
+    res.classList.remove("hidden");
+    res.innerHTML = `
+        <div class="card">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div class="card-title" style="margin:0;">Décision algorithmique</div>
+                <span class="badge ${badgeClass}">${decision}</span>
+            </div>
+            ${hitlHtml}
+        </div>
+        ${profileHtml}
+        <div class="card">
+            <div class="card-title">Résultats des agents</div>
+            <div class="agents-grid">
+                <div class="agent-card"><div class="a-icon">🪪</div><div class="a-name">Identité</div>
+                    <div class="a-value">${idr.statut || "N/A"}</div></div>
+                <div class="agent-card"><div class="a-icon">📊</div><div class="a-name">Finance</div>
+                    <div class="a-value">${fr.statut || "N/A"}</div></div>
+                <div class="agent-card"><div class="a-icon">🤖</div><div class="a-name">Score ML</div>
+                    <div class="a-value">${sc.score != null ? sc.score : "N/A"}</div></div>
+                <div class="agent-card"><div class="a-icon">📝</div><div class="a-name">Mémo</div>
+                    <div class="a-value">${memo.pdf_path ? "Généré" : "Erreur"}</div></div>
+            </div>
+            ${shapHtml ? '<div class="section-title">🔍 Facteurs de décision (SHAP)</div>' + shapHtml : ""}
+        </div>
+        ${memo.memo_text ? `<div class="card"><div class="card-title">📄 Mémo de crédit</div>
+            <div class="memo-content">${memo.memo_text}</div>
+            ${memo.cin ? `<a href="/api/memo-pdf/${memo.cin}" target="_blank" class="btn btn-outline" style="margin-top:16px;">⬇️ Télécharger le PDF</a>` : ""}
+            </div>` : ""}
+        <div class="card">
+            <div class="card-title">✅ Validation finale du chargé de crédit</div>
+            <textarea id="comment" placeholder="Commentaire (optionnel)" style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; font-family:inherit; margin-bottom:16px;" rows="2"></textarea>
+            <div style="display:flex; gap:12px;">
+                <button class="btn btn-success" onclick="validate('approuvé')">✅ APPROUVER</button>
+                <button class="btn btn-outline" onclick="validate('complément')">⚠️ DEMANDER COMPLÉMENT</button>
+                <button class="btn btn-danger" onclick="validate('rejeté')">❌ REJETER</button>
+            </div>
+            <div id="validation-msg" style="margin-top:14px;"></div>
+        </div>
+    `;
+    res.scrollIntoView({ behavior: "smooth" });
+}
+
+function validate(action) {
+    const comment = document.getElementById("comment").value;
+    const msg = document.getElementById("validation-msg");
+    const colors = {"approuvé":"var(--teal)", "rejeté":"var(--red)", "complément":"var(--amber)"};
+    msg.innerHTML = `<div style="padding:12px; border-radius:8px; background:var(--bg); color:${colors[action]}; font-weight:600;">
+        Dossier ${action} par le chargé de crédit. ${comment ? "Commentaire : " + comment : ""}</div>`;
+}
+
+// Init
+loadStats();
+loadProfiles();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "type_document": "cin",
+  "cin": "99887766",
+  "nom": "",
+  "prenom": null,
+  "date_naissance": "1990-04-15",
+  "adresse": null,
+  "confidence_moyenne": 0.568,
+  "fichier_source": "cin_recto_upload.png",
+  "nb_blocs_ocr": 40,
+  "alerte_hitl": true,
+  "message_hitl": "Confiance OCR faible - verification humaine requise"
+}
